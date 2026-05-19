@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { vulnerableObjects, emergencyEvents } from '@/data/mockData';
 
@@ -21,6 +22,13 @@ const activeEmergencies = emergencyEvents.filter(e => e.status === 'active').len
 const totalDamage = emergencyEvents.reduce((s, e) => s + e.economicDamage, 0);
 
 export default function DashboardPage() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const timeStr = now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' МСК';
+
   const recentEvents = [...emergencyEvents].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
   const topRisk = [...vulnerableObjects].sort((a, b) => b.riskScore - a.riskScore).slice(0, 5);
 
@@ -30,7 +38,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Обзор системы</h1>
-          <p className="text-sm text-muted-foreground mono">19 мая 2026 · 09:41 МСК · Республика Адыгея</p>
+          <p className="text-sm text-muted-foreground mono">{timeStr} · Республика Адыгея</p>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/30 px-3 py-1.5 rounded">
           <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
