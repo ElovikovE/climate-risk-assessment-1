@@ -37,7 +37,6 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold">Обзор системы</h1>
           <p className="text-sm text-muted-foreground mono">{timeStr} · Республика Адыгея</p>
         </div>
 
