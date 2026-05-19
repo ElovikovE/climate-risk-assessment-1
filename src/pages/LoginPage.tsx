@@ -38,6 +38,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           <p className="text-sm text-muted-foreground mt-1">
             Система анализа климатических рисков
           </p>
+          <p className="text-xs text-muted-foreground/70 mt-0.5">Республика Адыгея</p>
         </div>
 
         {/* Form */}

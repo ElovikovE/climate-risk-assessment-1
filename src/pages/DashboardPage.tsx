@@ -30,7 +30,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Обзор системы</h1>
-          <p className="text-sm text-muted-foreground mono">19 мая 2026 · 09:41 МСК</p>
+          <p className="text-sm text-muted-foreground mono">19 мая 2026 · 09:41 МСК · Республика Адыгея</p>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/30 px-3 py-1.5 rounded">
           <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />

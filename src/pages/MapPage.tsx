@@ -13,10 +13,10 @@ export default function MapPage({ initialFilter = 'objects' }: MapPageProps) {
   const [filter, setFilter] = useState<'objects' | 'emergencies' | 'both'>(initialFilter);
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Bounding box: lat 53-70, lng 70-100
+  // Bounding box: Республика Адыгея — lat 43.8-45.2, lng 38.8-40.6
   const mapW = 100, mapH = 60;
-  const toX = (lng: number) => ((lng - 70) / 30) * mapW;
-  const toY = (lat: number) => ((70 - lat) / 17) * mapH;
+  const toX = (lng: number) => ((lng - 38.8) / 1.8) * mapW;
+  const toY = (lat: number) => ((45.2 - lat) / 1.4) * mapH;
 
   const selectedObj = vulnerableObjects.find(o => o.id === selected);
   const selectedEv = emergencyEvents.find(e => e.id === selected);
@@ -64,11 +64,11 @@ export default function MapPage({ initialFilter = 'objects' }: MapPageProps) {
               style={{ fontFamily: 'IBM Plex Mono, monospace' }}
             >
               {/* Coord grid */}
-              {[73, 80, 87, 94].map(lng => (
+              {[39.0, 39.5, 40.0, 40.5].map(lng => (
                 <line key={lng} x1={toX(lng)} y1={0} x2={toX(lng)} y2={mapH}
                   stroke="hsl(220 15% 16%)" strokeWidth="0.3" />
               ))}
-              {[55, 60, 65].map(lat => (
+              {[44.0, 44.5, 45.0].map(lat => (
                 <line key={lat} x1={0} y1={toY(lat)} x2={mapW} y2={toY(lat)}
                   stroke="hsl(220 15% 16%)" strokeWidth="0.3" />
               ))}
@@ -147,7 +147,7 @@ export default function MapPage({ initialFilter = 'objects' }: MapPageProps) {
 
             {/* Coordinates label */}
             <div className="absolute top-3 right-3 text-[10px] mono text-muted-foreground bg-background/80 px-2 py-1 rounded">
-              70°–100° в.д. · 53°–70° с.ш.
+              Республика Адыгея · 38.8°–40.6° в.д. · 43.8°–45.2° с.ш.
             </div>
           </div>
         </div>
