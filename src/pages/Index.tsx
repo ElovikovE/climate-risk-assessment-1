@@ -10,12 +10,14 @@ import EmergenciesAddPage from './EmergenciesAddPage';
 import EmergenciesAnalysisPage from './EmergenciesAnalysisPage';
 import ReferencePage from './ReferencePage';
 import MapPage from './MapPage';
+import RiskAssessmentPage from './RiskAssessmentPage';
 
 type Page =
   | 'dashboard'
   | 'objects-list'
   | 'objects-add'
   | 'objects-analysis'
+  | 'risk-assessment'
   | 'emergencies-list'
   | 'emergencies-add'
   | 'emergencies-analysis'
@@ -36,6 +38,7 @@ export default function Index() {
       case 'objects-list': return <ObjectsListPage onNavigate={p => setCurrentPage(p as Page)} />;
       case 'objects-add': return <ObjectsAddPage onNavigate={p => setCurrentPage(p as Page)} />;
       case 'objects-analysis': return <ObjectsAnalysisPage />;
+      case 'risk-assessment': return <RiskAssessmentPage />;
       case 'emergencies-list': return <EmergenciesListPage onNavigate={p => setCurrentPage(p as Page)} />;
       case 'emergencies-add': return <EmergenciesAddPage onNavigate={p => setCurrentPage(p as Page)} />;
       case 'emergencies-analysis': return <EmergenciesAnalysisPage />;

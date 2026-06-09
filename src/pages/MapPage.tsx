@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '@/components/ui/icon';
-import { vulnerableObjects, emergencyEvents, type VulnerableObject, type EmergencyEvent, type RiskLevel } from '@/data/mockData';
+import { vulnerableObjects, emergencyEvents, calcPeu, peuLabel, peuColor, type VulnerableObject, type EmergencyEvent, type RiskLevel } from '@/data/mockData';
 
 const riskColor: Record<RiskLevel, string> = {
   critical: '#f87171',
@@ -83,6 +83,10 @@ function objPopup(obj: VulnerableObject): string {
       <div style="font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.5">${obj.description}</div>
       <div style="margin-top:8px">${threats}</div>
       <div style="font-size:10px;color:#475569;margin-top:8px">Последняя проверка: ${obj.lastInspection}</div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid #1e2533;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;color:#64748b">ПЭУ = (У−С)/(Р+В)</span>
+        <span style="font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:600;color:${peuColor(calcPeu(obj.economics))}">${calcPeu(obj.economics).toFixed(2)} — ${peuLabel(calcPeu(obj.economics))}</span>
+      </div>
     </div>`;
 }
 

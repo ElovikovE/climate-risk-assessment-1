@@ -15,6 +15,7 @@ const navItems = [
     { id: 'objects-list', label: 'Каталог объектов' },
     { id: 'objects-add', label: 'Добавить объект' },
     { id: 'objects-analysis', label: 'Анализ по КУО' },
+    { id: 'risk-assessment', label: 'Оценка рисков КУО' },
   ]},
   { id: 'emergencies', label: 'ЧС', icon: 'AlertTriangle', children: [
     { id: 'emergencies-list', label: 'Список ЧС' },

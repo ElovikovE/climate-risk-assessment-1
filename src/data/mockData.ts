@@ -1,5 +1,12 @@
 export type RiskLevel = 'critical' | 'high' | 'medium' | 'low';
 
+export interface KuoEconomics {
+  maxDamage: number;
+  insuredDamage: number;
+  reserves: number;
+  annualRevenue: number;
+}
+
 export interface VulnerableObject {
   id: string;
   name: string;
@@ -13,6 +20,27 @@ export interface VulnerableObject {
   lastInspection: string;
   description: string;
   threats: string[];
+  economics: KuoEconomics;
+}
+
+export function calcPeu(e: KuoEconomics): number {
+  const denominator = e.reserves + e.annualRevenue;
+  if (denominator === 0) return 0;
+  return (e.maxDamage - e.insuredDamage) / denominator;
+}
+
+export function peuLabel(peu: number): string {
+  if (peu >= 1.5) return 'Критическая';
+  if (peu >= 0.8) return 'Высокая';
+  if (peu >= 0.3) return 'Средняя';
+  return 'Низкая';
+}
+
+export function peuColor(peu: number): string {
+  if (peu >= 1.5) return '#f87171';
+  if (peu >= 0.8) return '#fb923c';
+  if (peu >= 0.3) return '#facc15';
+  return '#4ade80';
 }
 
 export interface EmergencyEvent {
@@ -45,6 +73,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-02-14',
     description: 'Основной водозабор р. Белой, обеспечивает водоснабжение 145 000 жителей Майкопа. Высокий риск паводкового загрязнения и обмеления в засушливые периоды.',
     threats: ['Паводок', 'Загрязнение воды', 'Засуха', 'Обмеление'],
+    economics: { maxDamage: 2400, insuredDamage: 480, reserves: 120, annualRevenue: 860 },
   },
   {
     id: 'obj-002',
@@ -59,6 +88,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-01-10',
     description: 'Автомобильный мост через р. Белую, критически важный для транспортной связности города. Подвержен паводковым нагрузкам при весеннем таянии снегов в горах.',
     threats: ['Паводок', 'Эрозия берегов', 'Сель'],
+    economics: { maxDamage: 1800, insuredDamage: 600, reserves: 80, annualRevenue: 420 },
   },
   {
     id: 'obj-003',
@@ -73,6 +103,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2025-12-20',
     description: 'Тепловая электростанция — основной источник теплоснабжения Майкопа. Расположена в долине с риском затопления при экстремальных паводках р. Белой.',
     threats: ['Паводок', 'Экстремальная жара', 'Засуха'],
+    economics: { maxDamage: 3100, insuredDamage: 900, reserves: 350, annualRevenue: 1240 },
   },
   {
     id: 'obj-004',
@@ -87,6 +118,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-03-05',
     description: 'Главное медицинское учреждение республики на 820 коек. Риски связаны с жарой, перебоями в водоснабжении и отключениями электроэнергии при ЧС.',
     threats: ['Экстремальная жара', 'Перебои водоснабжения', 'Ураганный ветер'],
+    economics: { maxDamage: 950, insuredDamage: 310, reserves: 180, annualRevenue: 680 },
   },
   {
     id: 'obj-005',
@@ -101,6 +133,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2025-10-18',
     description: 'Горная дорога к плато Лагонаки — единственный путь к туристическим объектам и населённым пунктам нагорной части. Регулярно перекрывается из-за селей и оползней.',
     threats: ['Сель', 'Оползень', 'Снегопад', 'Ураганный ветер'],
+    economics: { maxDamage: 2700, insuredDamage: 400, reserves: 60, annualRevenue: 310 },
   },
   {
     id: 'obj-006',
@@ -115,6 +148,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-02-28',
     description: 'Верхний бьеф Краснодарского водохранилища. При экстремальных паводках на р. Кубани возникает риск сброса воды и затопления низинных районов Адыгеи.',
     threats: ['Паводок', 'Экстремальные осадки', 'Эрозия'],
+    economics: { maxDamage: 4200, insuredDamage: 1100, reserves: 520, annualRevenue: 980 },
   },
   {
     id: 'obj-007',
@@ -129,6 +163,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-01-25',
     description: 'Школа в станице Гиагинской — расположена в пойме р. Гиаги, риск подтопления при весенних паводках.',
     threats: ['Паводок', 'Подтопление'],
+    economics: { maxDamage: 280, insuredDamage: 40, reserves: 15, annualRevenue: 95 },
   },
   {
     id: 'obj-008',
@@ -143,6 +178,7 @@ export const vulnerableObjects: VulnerableObject[] = [
     lastInspection: '2026-04-01',
     description: 'Зернохранилище ёмкостью 60 000 т. Умеренный риск при экстремальных осадках и подтоплении.',
     threats: ['Подтопление', 'Экстремальная жара'],
+    economics: { maxDamage: 180, insuredDamage: 60, reserves: 25, annualRevenue: 220 },
   },
 ];
 
