@@ -40,14 +40,14 @@ export default function Layout({ children, currentPage, onNavigate, user, onLogo
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-56 border-r border-border flex flex-col shrink-0">
+      <aside className="w-64 border-r border-border flex flex-col shrink-0">
         {/* Logo */}
         <div className="px-4 py-5 border-b border-border">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
+            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center shrink-0">
               <Icon name="Activity" size={13} className="text-primary-foreground" />
             </div>
-            <span className="text-sm font-semibold tracking-wide">КлиматРиск</span>
+            <span className="text-sm font-semibold tracking-wide leading-tight">Информационная система оценки климатических рисков</span>
           </div>
           <p className="text-[10px] text-muted-foreground mt-0.5 mono">v1.0 · 2026</p>
         </div>
