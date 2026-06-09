@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import Icon from '@/components/ui/icon';
 import { vulnerableObjects, calcPeu, peuLabel, peuColor, type VulnerableObject } from '@/data/mockData';
+import TimeSeriesPanel from '@/components/TimeSeriesPanel';
 
 const typeOptions = ['Все', ...Array.from(new Set(vulnerableObjects.map(o => o.type)))];
 const regionOptions = ['Все', ...Array.from(new Set(vulnerableObjects.map(o => o.region)))];
@@ -243,6 +244,11 @@ export default function RiskAssessmentPage() {
             {label}
           </div>
         ))}
+      </div>
+
+      {/* Временной ряд */}
+      <div className="border-t border-border pt-6">
+        <TimeSeriesPanel />
       </div>
 
       {selectedObj && <DetailModal obj={selectedObj} onClose={() => setSelectedObj(null)} />}

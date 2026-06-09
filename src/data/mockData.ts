@@ -1,5 +1,68 @@
 export type RiskLevel = 'critical' | 'high' | 'medium' | 'low';
 
+export type MetricKey = 'waterLevel' | 'temperature' | 'precipitation' | 'riskScore';
+
+export interface TimeSeriesPoint {
+  date: string;
+  waterLevel: number;
+  temperature: number;
+  precipitation: number;
+  riskScore: number;
+}
+
+export interface MetricConfig {
+  key: MetricKey;
+  label: string;
+  unit: string;
+  color: string;
+  threshold: number;
+  thresholdLabel: string;
+}
+
+export const metricConfigs: Record<MetricKey, MetricConfig> = {
+  waterLevel:    { key: 'waterLevel',    label: 'Уровень воды',  unit: 'м',    color: '#60a5fa', threshold: 3.5,  thresholdLabel: 'Опасный уровень' },
+  temperature:   { key: 'temperature',   label: 'Температура',   unit: '°C',   color: '#f87171', threshold: 38,   thresholdLabel: 'Порог жары' },
+  precipitation: { key: 'precipitation', label: 'Осадки',        unit: 'мм/сут', color: '#a78bfa', threshold: 60,   thresholdLabel: 'Критические осадки' },
+  riskScore:     { key: 'riskScore',     label: 'Балл риска',    unit: '',     color: '#fb923c', threshold: 75,   thresholdLabel: 'Порог высокого риска' },
+};
+
+function seededRng(seed: number) {
+  let s = seed;
+  return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+}
+
+function generateTimeSeries(objId: string, baseRiskScore: number): TimeSeriesPoint[] {
+  const rng = seededRng(objId.split('').reduce((a, c) => a + c.charCodeAt(0), 0));
+  const points: TimeSeriesPoint[] = [];
+  const start = new Date('2021-01-01');
+  for (let m = 0; m < 60; m++) {
+    const d = new Date(start);
+    d.setMonth(d.getMonth() + m);
+    const monthIdx = d.getMonth();
+    const sinWave = Math.sin((monthIdx / 12) * Math.PI * 2);
+    const noise = () => (rng() - 0.5) * 2;
+    const waterBase = 1.2 + sinWave * 2.1 + noise() * 0.8;
+    const tempBase = 13 + sinWave * 15 + noise() * 3;
+    const precipBase = Math.max(0, 25 - sinWave * 10 + Math.abs(noise()) * 35);
+    const riskBase = baseRiskScore + sinWave * 12 + noise() * 8;
+    points.push({
+      date: d.toISOString().slice(0, 7),
+      waterLevel: +Math.max(0, waterBase).toFixed(2),
+      temperature: +tempBase.toFixed(1),
+      precipitation: +precipBase.toFixed(1),
+      riskScore: +Math.min(100, Math.max(0, riskBase)).toFixed(0),
+    });
+  }
+  return points;
+}
+
+export const timeSeriesData: Record<string, TimeSeriesPoint[]> = {};
+const _objIds = ['obj-001','obj-002','obj-003','obj-004','obj-005','obj-006','obj-007','obj-008'];
+const _baseScores: Record<string,number> = { 'obj-001':91,'obj-002':78,'obj-003':74,'obj-004':57,'obj-005':89,'obj-006':71,'obj-007':49,'obj-008':38 };
+for (const id of _objIds) {
+  timeSeriesData[id] = generateTimeSeries(id, _baseScores[id]);
+}
+
 export interface KuoEconomics {
   maxDamage: number;
   insuredDamage: number;
