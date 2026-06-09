@@ -275,7 +275,7 @@ export default function MapPage({ initialFilter = 'objects' }: MapPageProps) {
           <div className="border-t border-border pt-2 space-y-1.5">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-400/30" />
-              <span className="text-[10px] text-muted-foreground">КУО (квадрат)</span>
+              <span className="text-[10px] text-muted-foreground">КУО</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-white/40 border border-white/20" />
